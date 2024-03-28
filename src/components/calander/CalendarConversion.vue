@@ -10,7 +10,29 @@
       @finishFailed="onFinishFailed"
     >
       <a-form-item>
+        <a-radio-group v-model:value="formState.calendarType">
+          <a-radio-button value="gregorian">公历</a-radio-button>
+          <a-radio-button value="lunar">农历</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+
+      <!-- 公历日期选择器 -->
+      <a-form-item v-if="formState.calendarType === 'gregorian'">
         <a-date-picker v-model:value="formState.selectedDate" />
+      </a-form-item>
+
+      <!-- 农历日期选择器（示例中仅显示年月日，额外闰月字段需要自行添加） -->
+      <a-form-item v-else>
+        <!-- 这里可以根据需要添加对农历年、月、日和是否闰月的输入处理 -->
+        <a-input v-model:value="formState.lunarYear" placeholder="农历年" />
+        <a-input v-model:value="formState.lunarMonth" placeholder="农历月" />
+        <a-input v-model:value="formState.lunarDay" placeholder="农历日" />
+        <!-- 假设闰月逻辑是通过另一个字段控制的 -->
+        <a-switch
+          v-model:value="formState.isLeapMonth"
+          checked-children="闰月"
+          un-checked-children="平月"
+        />
       </a-form-item>
 
       <a-form-item>
@@ -20,7 +42,7 @@
 
     <div class="search-result-list">
       <a-row :gutter="30">
-        <a-col :span="5" style="text-align: left"> 公历: {{ gregorianDisplay }} </a-col>
+        <a-col :span="6" style="text-align: left"> 公历: {{ gregorianDisplay }} </a-col>
         <a-col :span="6" style="text-align: left"> 农历: {{ lunarDisplay }} </a-col>
       </a-row>
     </div>
@@ -34,10 +56,18 @@ import dayjs, { Dayjs } from 'dayjs'
 interface FormState {
   calendarType: string
   selectedDate: Dayjs
+  lunarYear: number
+  lunarMonth: number
+  lunarDay: number
+  isLeapMonth: boolean
 }
 const formState = reactive<FormState>({
   calendarType: 'gregorian', // 默认值为公历
-  selectedDate: dayjs()
+  selectedDate: dayjs(),
+  lunarYear: dayjs().year(),
+  lunarMonth: 1,
+  lunarDay: 1,
+  isLeapMonth: false
 })
 
 const gregorianDisplay = ref('')
@@ -45,10 +75,21 @@ const lunarDisplay = ref('')
 
 const onFinish = () => {
   const date = formState.selectedDate.toDate()
-  const lunar = chineseLunar.solarToLunar(date)
-  console.log(lunar)
-  lunarDisplay.value = chineseLunar.format(lunar, 'YMd')
-  gregorianDisplay.value = formState.selectedDate.format('YYYY-MM-DD')
+  if (formState.calendarType === 'gregorian') {
+    const lunar = chineseLunar.solarToLunar(date)
+    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
+    gregorianDisplay.value = formState.selectedDate.format('YYYY-MM-DD')
+  } else {
+    const gregorianDate = chineseLunar.lunarToSolar(
+      formState.lunarYear,
+      formState.lunarMonth,
+      formState.lunarDay,
+      formState.isLeapMonth
+    )
+    gregorianDisplay.value = dayjs(gregorianDate).format('YYYY-MM-DD')
+    const lunar = chineseLunar.solarToLunar(gregorianDate)
+    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
+  }
 }
 
 const onFinishFailed = (errorInfo: any) => {
