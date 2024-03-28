@@ -5,7 +5,7 @@
       name="advanced-search"
       class="ant-advanced-search-form"
       layout="inline"
-      autocomplete=""
+      autocomplete="false"
       @finish="onFinish"
       @finishFailed="onFinishFailed"
     >
@@ -24,12 +24,24 @@
       <!-- 农历日期选择器（示例中仅显示年月日，额外闰月字段需要自行添加） -->
       <a-form-item v-else>
         <!-- 这里可以根据需要添加对农历年、月、日和是否闰月的输入处理 -->
-        <a-input v-model:value="formState.lunarYear" placeholder="农历年" />
-        <a-input v-model:value="formState.lunarMonth" placeholder="农历月" />
-        <a-input v-model:value="formState.lunarDay" placeholder="农历日" />
+        <a-select v-model:value="formState.lunarYear" style="width: 120px">
+          <template v-for="item in 100" :key="item">
+            <a-select-option :value="`${item + 1970}`">{{ item + 1970 }}</a-select-option>
+          </template>
+        </a-select>
+        <a-select v-model:value="formState.lunarMonth" style="width: 60px">
+          <template v-for="item in 12" :key="item">
+            <a-select-option :value="`${item}`">{{ item }}</a-select-option>
+          </template>
+        </a-select>
+        <a-select v-model:value="formState.lunarDay" style="width: 60px">
+          <template v-for="item in 30" :key="item">
+            <a-select-option :value="`${item}`">{{ item }}</a-select-option>
+          </template>
+        </a-select>
         <!-- 假设闰月逻辑是通过另一个字段控制的 -->
         <a-switch
-          v-model:value="formState.isLeapMonth"
+          v-model:checked="formState.isLeapMonth"
           checked-children="闰月"
           un-checked-children="平月"
         />
@@ -49,24 +61,25 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
+import { Modal } from 'ant-design-vue'
 import chineseLunar from 'chinese-lunar'
 import dayjs, { Dayjs } from 'dayjs'
 
 interface FormState {
   calendarType: string
   selectedDate: Dayjs
-  lunarYear: number
-  lunarMonth: number
-  lunarDay: number
+  lunarYear: string
+  lunarMonth: string
+  lunarDay: string
   isLeapMonth: boolean
 }
 const formState = reactive<FormState>({
   calendarType: 'gregorian', // 默认值为公历
   selectedDate: dayjs(),
-  lunarYear: dayjs().year(),
-  lunarMonth: 1,
-  lunarDay: 1,
+  lunarYear: '2023',
+  lunarMonth: '1',
+  lunarDay: '1',
   isLeapMonth: false
 })
 
@@ -81,9 +94,9 @@ const onFinish = () => {
     gregorianDisplay.value = formState.selectedDate.format('YYYY-MM-DD')
   } else {
     const gregorianDate = chineseLunar.lunarToSolar(
-      formState.lunarYear,
-      formState.lunarMonth,
-      formState.lunarDay,
+      parseInt(formState.lunarYear, 10),
+      parseInt(formState.lunarMonth, 10),
+      parseInt(formState.lunarDay, 10),
       formState.isLeapMonth
     )
     gregorianDisplay.value = dayjs(gregorianDate).format('YYYY-MM-DD')
@@ -97,8 +110,36 @@ const onFinishFailed = (errorInfo: any) => {
 }
 
 onMounted(() => {
+  formState.lunarYear = dayjs().year() + ''
   onFinish() // 默认执行一次转换，以显示今天的日期信息
 })
+
+watch(
+  [() => formState.lunarYear, () => formState.lunarMonth],
+  ([newYear, newMonth], [oldYear, oldMonth]) => {
+    // 检查所选年份是否有闰月，以及所选月份是否为该闰月
+    const leapMonth = chineseLunar.leapMonthOfYear(newYear)
+    if (leapMonth && parseInt(newMonth, 10) === leapMonth) {
+      if (formState.isLeapMonth === true) {
+        return
+      }
+      // 如果当前选择的月份是闰月，则弹窗提示用户
+      Modal.confirm({
+        title: '查询闰月',
+        content: `检测到${newYear}年的${newMonth}月是闰月，您想查询闰${newMonth}月吗？`,
+        onOk() {
+          // 如果用户选择是，则将isLeapMonth切换为true
+          formState.isLeapMonth = true
+        },
+        onCancel() {
+          // 如果用户选择否，可以选择不做任何事，或者根据需要调整逻辑
+          console.log('用户选择了不查询闰月')
+        }
+      })
+    }
+  },
+  { deep: true, immediate: false }
+)
 </script>
 <style scoped>
 .search-result-list {
