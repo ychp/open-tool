@@ -61,6 +61,11 @@ const items = ref([
     label: '时间工具',
     children: [
       {
+        key: 'TimestampConversion',
+        label: '时间戳转换',
+        to: '/TimestampConversion'
+      },
+      {
         key: 'CalendarConversion',
         label: '公历、农历转换',
         to: '/CalendarConversion'
@@ -86,6 +91,18 @@ const items = ref([
         key: 'GenerateBySQL',
         label: '基于SQL生成代码',
         to: '/GenerateBySQL'
+      }
+    ]
+  },
+  {
+    key: 'Amusement',
+    icon: () => h(CodeOutlined),
+    label: '娱乐',
+    children: [
+      {
+        key: 'MahjongScoreCalculator',
+        label: '麻将分数计算器',
+        to: '/MahjongScoreCalculator'
       }
     ]
   }

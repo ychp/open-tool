@@ -11,7 +11,17 @@ const routers = [
   {
     path: '/CalendarConversion',
     name: 'CalendarConversion',
-    component: () => import('@/components/calander/CalendarConversion.vue')
+    component: () => import('@/components/calander/CalendarConversion/CalendarConversion.vue')
+  },
+  {
+    path: '/TimestampConversion',
+    name: 'TimestampConversion',
+    component: () => import('@/components/calander/TimestampConversion/TimestampConversion.vue')
+  },
+  {
+    path: '/MahjongScoreCalculator',
+    name: 'MahjongScoreCalculator',
+    component: () => import('@/components/amusement/MahjongScoreCalculator.vue')
   }
 ]
 
