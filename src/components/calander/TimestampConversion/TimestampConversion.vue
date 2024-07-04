@@ -1,153 +1,201 @@
 <template>
-  <div>
-    <a-form
-      :model="formState"
-      name="advanced-search"
-      class="ant-advanced-search-form"
-      layout="inline"
-      autocomplete="false"
-      @finish="onFinish"
-      @finishFailed="onFinishFailed"
-    >
-      <a-form-item>
-        <a-radio-group v-model:value="formState.calendarType">
-          <a-radio-button value="gregorian">公历</a-radio-button>
-          <a-radio-button value="lunar">农历</a-radio-button>
-        </a-radio-group>
-      </a-form-item>
+  <div class="app-container">
+    <!-- 展示互联网当前时间 -->
+    <div class="internet-time-display">
+      <span>
+        北京时间: {{ dateInfo.internetCurrentDateTime }} ({{ dateInfo.internetCurrentTimeStamp }})
 
-      <!-- 公历日期选择器 -->
-      <a-form-item v-if="formState.calendarType === 'gregorian'">
-        <a-date-picker v-model:value="formState.selectedDate" />
-      </a-form-item>
-
-      <!-- 农历日期选择器（示例中仅显示年月日，额外闰月字段需要自行添加） -->
-      <a-form-item v-else>
-        <!-- 这里可以根据需要添加对农历年、月、日和是否闰月的输入处理 -->
-        <a-select v-model:value="formState.lunarYear" style="width: 120px">
-          <template v-for="item in 100" :key="item">
-            <a-select-option :value="`${item + 1970}`">{{ item + 1970 }}</a-select-option>
-          </template>
-        </a-select>
-        <a-select v-model:value="formState.lunarMonth" style="width: 60px">
-          <template v-for="item in 12" :key="item">
-            <a-select-option :value="`${item}`">{{ item }}</a-select-option>
-          </template>
-        </a-select>
-        <a-select v-model:value="formState.lunarDay" style="width: 60px">
-          <template v-for="item in 30" :key="item">
-            <a-select-option :value="`${item}`">{{ item }}</a-select-option>
-          </template>
-        </a-select>
-        <!-- 假设闰月逻辑是通过另一个字段控制的 -->
-        <a-switch
-          v-model:checked="formState.isLeapMonth"
-          checked-children="闰月"
-          un-checked-children="平月"
-        />
-      </a-form-item>
-
-      <a-form-item>
-        <a-button type="primary" html-type="submit">查询</a-button>
-      </a-form-item>
-    </a-form>
-
-    <div class="search-result-list">
-      <a-row :gutter="30">
-        <a-col :span="6" style="text-align: left"> 公历: {{ gregorianDisplay }} </a-col>
-        <a-col :span="6" style="text-align: left"> 农历: {{ lunarDisplay }} </a-col>
+        <a-button type="primary" shape="circle" @click="fetchInternetTime">
+          <template #icon><SyncOutlined /></template>
+        </a-button>
+      </span>
+    </div>
+    <!-- 时间戳和日期时间输入组件 -->
+    <div class="input-section">
+      <a-row>
+        <a-col :span="6" class="item">
+          <label for="timestamp-input">时间戳(毫秒)</label>
+          <a-input
+            id="timestamp-input"
+            placeholder="输入时间戳"
+            type="number"
+            v-model:value="dateInfo.timestamp"
+            @blur="updateAllFields('timestamp')"
+            @pressEnter="updateAllFields('timestamp')"
+            style="width: 200px"
+          />
+        </a-col>
+        <a-col :span="6" class="item">
+          <label for="datetime-input">年-月-日 时:分:秒</label>
+          <a-input
+            id="datetime-input"
+            type="text"
+            v-model:value="dateInfo.dateTimeStr"
+            @blur="updateAllFields('dateTime')"
+            @pressEnter="updateAllFields('dateTime')"
+            style="width: 200px"
+          />
+        </a-col>
+        <a-col :span="6" class="item">
+          <label for="datetime-input">年-月-日</label>
+          <a-input
+            id="datetime-input"
+            type="text"
+            v-model:value="dateInfo.dateStr"
+            @blur="updateAllFields('date')"
+            @pressEnter="updateAllFields('date')"
+            style="width: 120px"
+          />
+        </a-col>
+        <a-col :span="6" class="item">
+          <label for="datetime-input">年月日</label>
+          <a-input
+            id="datetime-input"
+            type="text"
+            v-model:value="dateInfo.dateStrYMd"
+            @blur="updateAllFields('dateYMd')"
+            @pressEnter="updateAllFields('dateYMd')"
+            style="width: 120px"
+          />
+        </a-col>
       </a-row>
     </div>
   </div>
 </template>
-<script lang="ts" setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { Modal } from 'ant-design-vue'
-import dayjs, { Dayjs } from 'dayjs'
 
-interface FormState {
-  calendarType: string
-  selectedDate: Dayjs
-  lunarYear: string
-  lunarMonth: string
-  lunarDay: string
-  isLeapMonth: boolean
+<script lang="ts" setup>
+import axios from 'axios'
+import { onMounted, reactive } from 'vue'
+import { SyncOutlined } from '@ant-design/icons-vue'
+import moment from 'moment'
+
+interface DateInfo {
+  timestamp: Number
+  dateTimeStr: string
+  dateStr: string
+  dateStrYMd: string
+  internetCurrentTimeStamp: Number
+  internetCurrentDateTime: string
 }
-const formState = reactive<FormState>({
-  calendarType: 'gregorian', // 默认值为公历
-  selectedDate: dayjs(),
-  lunarYear: '2023',
-  lunarMonth: '1',
-  lunarDay: '1',
-  isLeapMonth: false
+
+const dateInfo = reactive<DateInfo>({
+  timestamp: Date.now(),
+  dateTimeStr: moment().format('YYYY-MM-DD HH:mm:ss'),
+  dateStr: moment().format('YYYY-MM-DD'),
+  dateStrYMd: moment().format('YYYYMMDD'),
+  internetCurrentTimeStamp: Date.now(),
+  internetCurrentDateTime: moment().format('YYYY-MM-DD HH:mm:ss')
 })
 
-const gregorianDisplay = ref('')
-const lunarDisplay = ref('')
+onMounted(() => {
+  fetchInternetTime()
+})
 
-const onFinish = () => {
-  const date = formState.selectedDate.toDate()
-  if (formState.calendarType === 'gregorian') {
-    const lunar = chineseLunar.solarToLunar(date)
-    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
-    gregorianDisplay.value = formState.selectedDate.format('YYYY-MM-DD')
-  } else {
-    const gregorianDate = chineseLunar.lunarToSolar(
-      parseInt(formState.lunarYear, 10),
-      parseInt(formState.lunarMonth, 10),
-      parseInt(formState.lunarDay, 10),
-      formState.isLeapMonth
-    )
-    gregorianDisplay.value = dayjs(gregorianDate).format('YYYY-MM-DD')
-    const lunar = chineseLunar.solarToLunar(gregorianDate)
-    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
+const fetchInternetTime = async () => {
+  try {
+    const response = await axios.get('http://worldtimeapi.org/api/ip')
+    const dateTime = response.data.datetime
+    dateInfo.internetCurrentTimeStamp = moment(dateTime).unix() * 1000
+    dateInfo.internetCurrentDateTime = moment(dateTime).format('YYYY-MM-DD HH:mm:ss')
+  } catch (error) {
+    console.error('Failed to fetch internet time:', error)
   }
 }
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
+const updateAllFields = async function (fieldType: 'timestamp' | 'dateTime' | 'date' | 'dateYMd') {
+  let updatedTimestamp = 0
+
+  if (fieldType === 'dateTime') {
+    console.log('dateTimeStr:', dateInfo.dateTimeStr)
+    if (dateInfo.dateTimeStr) {
+      const dateObj = moment(dateInfo.dateTimeStr, 'YYYY-MM-DD HH:mm:ss')
+      if (dateObj.isValid()) {
+        updatedTimestamp = dateObj.toDate().valueOf()
+      }
+    }
+  } else if (fieldType === 'timestamp') {
+    updatedTimestamp = Number(dateInfo.timestamp)
+    console.log('timestamp:', dateInfo.timestamp)
+  } else if (fieldType === 'date') {
+    console.log('dateStr:', dateInfo.dateStr)
+    if (dateInfo.dateStr) {
+      const dateObj = moment(dateInfo.dateStr, 'YYYY-MM-DD')
+      if (dateObj.isValid()) {
+        updatedTimestamp = dateObj.toDate().valueOf()
+      }
+    }
+  } else if (fieldType === 'dateYMd') {
+    console.log('dateYMd:', dateInfo.dateStrYMd)
+    if (dateInfo.dateStrYMd) {
+      const dateObj = moment(dateInfo.dateStrYMd, 'YYYYMMDD')
+      if (dateObj.isValid()) {
+        updatedTimestamp = dateObj.toDate().valueOf()
+      }
+    }
+  }
+
+  if (fieldType !== 'timestamp') {
+    if (dateInfo.timestamp && dateInfo.timestamp > 0) {
+      dateInfo.timestamp = updatedTimestamp
+    } else {
+      dateInfo.timestamp = 0
+    }
+  }
+  if (fieldType !== 'dateTime') {
+    if (updatedTimestamp > 0) {
+      dateInfo.dateTimeStr = moment.unix(updatedTimestamp / 1000).format('YYYY-MM-DD HH:mm:ss')
+    } else {
+      dateInfo.dateTimeStr = ''
+    }
+  }
+
+  if (fieldType !== 'date') {
+    if (updatedTimestamp > 0) {
+      dateInfo.dateStr = moment.unix(updatedTimestamp / 1000).format('YYYY-MM-DD')
+    } else {
+      dateInfo.dateStr = ''
+    }
+  }
+
+  if (fieldType !== 'dateYMd') {
+    if (updatedTimestamp > 0) {
+      dateInfo.dateStrYMd = moment.unix(updatedTimestamp / 1000).format('YYYYMMDD')
+    } else {
+      dateInfo.dateStrYMd = ''
+    }
+  }
+}
+</script>
+
+<style scoped>
+.app-container {
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh; /* 确保容器至少占据整个视口高度 */
 }
 
-onMounted(() => {
-  formState.lunarYear = dayjs().year() + ''
-  onFinish() // 默认执行一次转换，以显示今天的日期信息
-})
-
-watch(
-  [() => formState.lunarYear, () => formState.lunarMonth],
-  ([newYear, newMonth], [oldYear, oldMonth]) => {
-    // 检查所选年份是否有闰月，以及所选月份是否为该闰月
-    const leapMonth = chineseLunar.leapMonthOfYear(newYear)
-    if (leapMonth && parseInt(newMonth, 10) === leapMonth) {
-      if (formState.isLeapMonth === true) {
-        return
-      }
-      // 如果当前选择的月份是闰月，则弹窗提示用户
-      Modal.confirm({
-        title: '查询闰月',
-        content: `检测到${newYear}年的${newMonth}月是闰月，您想查询闰${newMonth}月吗？`,
-        onOk() {
-          // 如果用户选择是，则将isLeapMonth切换为true
-          formState.isLeapMonth = true
-        },
-        onCancel() {
-          // 如果用户选择否，可以选择不做任何事，或者根据需要调整逻辑
-          console.log('用户选择了不查询闰月')
-        }
-      })
-    }
-  },
-  { deep: true, immediate: false }
-)
-</script>
-<style scoped>
-.search-result-list {
-  margin-top: 16px;
-  border: 1px dashed #e9e9e9;
-  border-radius: 2px;
-  background-color: #fafafa;
+.internet-time-display {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
   text-align: center;
-  min-height: 500px;
-  padding: 16px 15px 0px 15px;
+}
+
+.input-section {
+  flex-direction: column;
+  width: 100%;
+  /* max-width: 400px; 设置最大宽度以适应不同屏幕尺寸 */
+}
+
+.input-section .item {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
 }
 </style>
