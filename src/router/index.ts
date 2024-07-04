@@ -21,7 +21,8 @@ const routers = [
   {
     path: '/MahjongScoreCalculator',
     name: 'MahjongScoreCalculator',
-    component: () => import('@/components/amusement/MahjongScoreCalculator.vue')
+    component: () =>
+      import('@/components/amusement/MahjongScoreCalculator/MahjongScoreCalculator.vue')
   }
 ]
 
