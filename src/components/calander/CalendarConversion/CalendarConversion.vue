@@ -25,8 +25,8 @@
       <a-form-item v-else>
         <!-- 这里可以根据需要添加对农历年、月、日和是否闰月的输入处理 -->
         <a-select v-model:value="formState.lunarYear" style="width: 120px">
-          <template v-for="item in 100" :key="item">
-            <a-select-option :value="`${item + 1970}`">{{ item + 1970 }}</a-select-option>
+          <template v-for="item in 50" :key="item">
+            <a-select-option :value="`${item + 2000}`">{{ item + 2000 }}</a-select-option>
           </template>
         </a-select>
         <a-select v-model:value="formState.lunarMonth" style="width: 60px">
@@ -63,7 +63,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch } from 'vue'
 import { Modal } from 'ant-design-vue'
-import chineseLunar from 'chinese-lunar'
+import { Solar, Lunar, LunarYear } from 'lunar-typescript'
 import dayjs, { Dayjs } from 'dayjs'
 
 interface FormState {
@@ -89,19 +89,24 @@ const lunarDisplay = ref('')
 const onFinish = () => {
   const date = formState.selectedDate.toDate()
   if (formState.calendarType === 'gregorian') {
-    const lunar = chineseLunar.solarToLunar(date)
-    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
+    const solar = Solar.fromDate(date)
+    const lunar = solar.getLunar()
+    lunarDisplay.value = lunar.toString()
     gregorianDisplay.value = formState.selectedDate.format('YYYY-MM-DD')
   } else {
-    const gregorianDate = chineseLunar.lunarToSolar(
+    const lunarDate = Lunar.fromYmd(
       parseInt(formState.lunarYear, 10),
-      parseInt(formState.lunarMonth, 10),
-      parseInt(formState.lunarDay, 10),
       formState.isLeapMonth
+        ? -parseInt(formState.lunarMonth, 10)
+        : parseInt(formState.lunarMonth, 10),
+      parseInt(formState.lunarDay, 10)
     )
-    gregorianDisplay.value = dayjs(gregorianDate).format('YYYY-MM-DD')
-    const lunar = chineseLunar.solarToLunar(gregorianDate)
-    lunarDisplay.value = chineseLunar.format(lunar, 'Y-M-d')
+
+    const gregorianDate = lunarDate.getSolar()
+    console.log(lunarDate)
+    console.log(gregorianDate)
+    gregorianDisplay.value = gregorianDate.toYmd()
+    lunarDisplay.value = lunarDate.toString()
   }
 }
 
@@ -118,7 +123,9 @@ watch(
   [() => formState.lunarYear, () => formState.lunarMonth],
   ([newYear, newMonth], [oldYear, oldMonth]) => {
     // 检查所选年份是否有闰月，以及所选月份是否为该闰月
-    const leapMonth = chineseLunar.leapMonthOfYear(newYear)
+    var lunarYear = LunarYear.fromYear(Number(newYear))
+    const leapMonth = lunarYear.getLeapMonth()
+    console.log(leapMonth)
     if (leapMonth && parseInt(newMonth, 10) === leapMonth) {
       if (formState.isLeapMonth === true) {
         return

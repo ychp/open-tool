@@ -6,7 +6,7 @@ const routers = [
   {
     path: '/',
     name: 'Homepage',
-    component: () => import('@/views/Homepage.vue')
+    component: () => import('@/components/homepage/HomePage.vue')
   },
   {
     path: '/CalendarConversion',

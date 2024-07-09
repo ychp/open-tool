@@ -135,7 +135,7 @@ const updateAllFields = async function (fieldType: 'timestamp' | 'dateTime' | 'd
   }
 
   if (fieldType !== 'timestamp') {
-    if (dateInfo.timestamp && dateInfo.timestamp > 0) {
+    if (dateInfo.timestamp && +dateInfo.timestamp > 0) {
       dateInfo.timestamp = updatedTimestamp
     } else {
       dateInfo.timestamp = 0

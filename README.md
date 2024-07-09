@@ -37,3 +37,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### Deploy for Production
+
+```sh
+scp -r ./dist root@tx:/root/website/open-tool/
+```

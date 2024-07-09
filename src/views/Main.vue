@@ -34,14 +34,14 @@ const state = reactive({
 
 const onOpenChange = (openKeys: string[]) => {
   const latestOpenKey = openKeys.find((key) => state.openKeys.indexOf(key) === -1)
-  if (state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+  if (!latestOpenKey || state.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
     state.openKeys = openKeys
   } else {
     state.openKeys = latestOpenKey ? [latestOpenKey] : []
   }
 }
 
-const handleMenuClick = (info: Any) => {
+const handleMenuClick = (info: any) => {
   if (info.item && info.item.to) {
     console.log(info.item)
     router.push(info.item.to)
