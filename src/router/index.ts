@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import NotFound from '@/components/error/404.vue'
+import NotFound from '@/components/error/NotFound.vue'
 import Main from '@/views/Main.vue'
 
 const routers = [
