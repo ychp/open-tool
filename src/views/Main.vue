@@ -1,7 +1,7 @@
 <template>
   <a-layout>
     <a-layout-sider style="background: #fff">
-      <div class="logo"></div>
+      <div class="logo">Y Z</div>
       <a-menu
         v-model:selectedKeys="state.selectedKeys"
         mode="inline"
@@ -110,9 +110,14 @@ const items = ref([
 </script>
 <style>
 .logo {
-  height: 32px;
-  background: rgba(83, 59, 235, 0.3);
-  margin: 16px;
+  height: 55px;
+  background: rgb(0, 130, 237);
+  color: #fff;
+  font-weight: bold;
+  font-style: italic;
+  text-align: center;
+  font-size: 45px;
+  vertical-align: middle;
 }
 
 .trigger {
