@@ -63,17 +63,17 @@ const items = ref([
       {
         key: 'TimestampConversion',
         label: '时间戳转换',
-        to: '/TimestampConversion'
+        to: '/timestamp-convert'
       },
       {
         key: 'CalendarConversion',
         label: '公历、农历转换',
-        to: '/CalendarConversion'
+        to: '/calendar-convert'
       },
       {
         key: 'HolidayLookup',
         label: '节假日查询',
-        to: '/HolidayLookup'
+        to: '/holiday-lookup'
       }
     ]
   },
@@ -85,27 +85,27 @@ const items = ref([
       {
         key: 'GenerateByTable',
         label: '基于表结构生成代码',
-        to: '/GenerateByTable'
+        to: '/generate-by-table'
       },
       {
         key: 'GenerateBySQL',
         label: '基于SQL生成代码',
-        to: '/GenerateBySQL'
-      }
-    ]
-  },
-  {
-    key: 'Amusement',
-    icon: () => h(CodeOutlined),
-    label: '娱乐',
-    children: [
-      {
-        key: 'MahjongScoreCalculator',
-        label: '麻将分数计算器',
-        to: '/MahjongScoreCalculator'
+        to: '/generate-by-sql'
       }
     ]
   }
+  // {
+  //   key: 'Amusement',
+  //   icon: () => h(CodeOutlined),
+  //   label: '娱乐',
+  //   children: [
+  //     {
+  //       key: 'MahjongScoreCalculator',
+  //       label: '麻将分数计算器',
+  //       to: '/mahjong-score'
+  //     }
+  //   ]
+  // }
 ])
 </script>
 <style>
