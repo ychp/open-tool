@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <div :style="{ marginBottom: '16px' }">
-      <a-button @click="remvoDuplicate">去重</a-button>
-      <a-button @click="sortAsc">正向排序</a-button>
-      <a-button @click="sortDesc">逆向排序</a-button>
+    <div class="operate">
+      <a-button class="btn" @click="remvoDuplicate">去重</a-button>
+      <a-button class="btn" @click="sortAsc">正向排序</a-button>
+      <a-button class="btn" @click="sortDesc">逆向排序</a-button>
     </div>
     <a-flex class="input-section">
       <a-textarea
@@ -73,6 +73,14 @@ function parseNumber2Text(numberArray: Array<Number>) {
   flex-direction: column;
   align-items: center;
   min-height: 100vh; /* 确保容器至少占据整个视口高度 */
+}
+
+.operate {
+  margin-bottom: 16px;
+}
+
+.operate .btn {
+  margin-right: 10px;
 }
 
 .input-section {
