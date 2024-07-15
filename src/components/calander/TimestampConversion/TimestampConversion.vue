@@ -1,17 +1,20 @@
 <template>
   <div class="app-container">
     <!-- 展示互联网当前时间 -->
-    <div class="internet-time-display">
-      <span>
+    <a-flex class="internet-time-display">
+      <span style="flex: auto">
         北京时间: {{ dateInfo.internetCurrentDateTime }} ({{ dateInfo.internetCurrentTimeStamp }})
 
         <a-button type="primary" shape="circle" @click="fetchInternetTime">
           <template #icon><SyncOutlined /></template>
         </a-button>
       </span>
-    </div>
-    <!-- 时间戳和日期时间输入组件 -->
-    <div class="input-section">
+    </a-flex>
+    <a-flex class="input-section">
+      <!-- 时间戳和日期时间输入组件 -->
+      <a-row class="title">
+        <a-col :span="24"><h3>时间戳转换</h3></a-col>
+      </a-row>
       <a-row>
         <a-col :span="6" class="item">
           <label for="timestamp-input">时间戳(毫秒)</label>
@@ -59,7 +62,45 @@
           />
         </a-col>
       </a-row>
-    </div>
+    </a-flex>
+    <a-flex class="input-section">
+      <!-- 时间戳和日期时间输入组件 -->
+      <a-row class="title">
+        <a-col :span="24"><h3>时间转秒/毫秒</h3></a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="8" class="item">
+          <label for="timestamp-input">时间(日时分秒，输入格式为 1d3h15m30s)</label>
+          <a-input
+            id="timestamp-input"
+            placeholder="输入时间"
+            type="text"
+            v-model:value="timeInfo.timeStr"
+            @blur="calTime()"
+            @pressEnter="calTime()"
+            style="width: 250px"
+          />
+        </a-col>
+        <a-col :span="8" class="item">
+          <label for="datetime-input">秒(s)</label>
+          <a-input
+            id="datetime-input"
+            type="number"
+            v-model:value="timeInfo.seconds"
+            style="width: 200px"
+          />
+        </a-col>
+        <a-col :span="8" class="item">
+          <label for="datetime-input">毫秒(ms)</label>
+          <a-input
+            id="datetime-input"
+            type="number"
+            v-model:value="timeInfo.milli"
+            style="width: 120px"
+          />
+        </a-col>
+      </a-row>
+    </a-flex>
   </div>
 </template>
 
@@ -78,6 +119,12 @@ interface DateInfo {
   internetCurrentDateTime: string
 }
 
+interface TimeInfo {
+  timeStr: string
+  seconds: Number
+  milli: Number
+}
+
 const dateInfo = reactive<DateInfo>({
   timestamp: Date.now(),
   dateTimeStr: moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -85,6 +132,12 @@ const dateInfo = reactive<DateInfo>({
   dateStrYMd: moment().format('YYYYMMDD'),
   internetCurrentTimeStamp: Date.now(),
   internetCurrentDateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+})
+
+const timeInfo = reactive<TimeInfo>({
+  timeStr: '1d',
+  seconds: 24 * 60 * 60,
+  milli: 24 * 60 * 60 * 1000
 })
 
 onMounted(() => {
@@ -165,6 +218,56 @@ const updateAllFields = async function (fieldType: 'timestamp' | 'dateTime' | 'd
     }
   }
 }
+
+const calTime = async function () {
+  console.log(timeInfo)
+  const { days, hours, minutes, seconds } = parseDuration(timeInfo.timeStr)
+  timeInfo.seconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds
+  timeInfo.milli = Number(timeInfo.seconds) * 1000
+}
+
+function parseDuration(durationStr: string): {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+} {
+  const regex = /(\d+)(d|h|m|s)/g
+  let match
+  let days = 0
+  let hours = 0
+  let minutes = 0
+  let seconds = 0
+
+  while ((match = regex.exec(durationStr)) !== null) {
+    const value = parseInt(match[1], 10)
+    switch (match[2]) {
+      case 'd':
+        days += value
+        break
+      case 'h':
+        hours += value
+        break
+      case 'm':
+        minutes += value
+        break
+      case 's':
+        seconds += value
+        break
+    }
+  }
+
+  // 将所有单位转换成秒，然后反向计算出天、小时、分钟和秒
+  let totalSeconds = seconds + minutes * 60 + hours * 3600 + days * 86400
+  days = Math.floor(totalSeconds / 86400)
+  totalSeconds %= 86400
+  hours = Math.floor(totalSeconds / 3600)
+  totalSeconds %= 3600
+  minutes = Math.floor(totalSeconds / 60)
+  seconds = totalSeconds % 60
+
+  return { days, hours, minutes, seconds }
+}
 </script>
 
 <style scoped>
@@ -186,7 +289,12 @@ const updateAllFields = async function (fieldType: 'timestamp' | 'dateTime' | 'd
 .input-section {
   flex-direction: column;
   width: 100%;
-  /* max-width: 400px; 设置最大宽度以适应不同屏幕尺寸 */
+  margin-top: 10px;
+}
+
+.input-section .title {
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 .input-section .item {
