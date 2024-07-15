@@ -9,7 +9,7 @@
       <a-textarea
         v-model:value="numberData.numberText"
         placeholder="请输入数字，换行分割"
-        :rows="10"
+        :rows="20"
       />
     </a-flex>
   </div>
@@ -36,24 +36,27 @@ const remvoDuplicate = async function () {
 
 const sortAsc = async function () {
   const numberArray = parseText2Number(numberData.numberText)
-  numberArray.sort((a, b) => a - b)
+  numberArray.sort((a, b) => Number(a) - Number(b))
   numberData.numberText = parseNumber2Text(numberArray)
 }
 
 const sortDesc = async function () {
   const numberArray = parseText2Number(numberData.numberText)
-  numberArray.sort((a, b) => b - a)
+  numberArray.sort((a, b) => Number(b) - Number(a))
   numberData.numberText = parseNumber2Text(numberArray)
 }
 
-function parseText2Number(text: string) {
+function parseText2Number(text: string): Array<Number> {
   const lines = text.split('\n')
-  return lines
-    .map((line) => {
-      const trimmedLine = line.trim()
-      return trimmedLine ? Number(trimmedLine) : null
-    })
-    .filter((num) => num !== null)
+  let numberArray = []
+  for (let lineIndex in lines) {
+    let item = lines[lineIndex]
+    item = item.trim()
+    if (item) {
+      numberArray.push(Number(item))
+    }
+  }
+  return numberArray
 }
 
 function parseNumber2Text(numberArray: Array<Number>) {
