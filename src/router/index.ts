@@ -18,7 +18,7 @@ const routers = [
   },
   {
     path: '/number-tool',
-    name: 'NumberTool',
+    name: 'NumberDeal',
     component: () => import('@/components/number/NumberTool/NumberTool.vue')
   },
   {

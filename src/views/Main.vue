@@ -22,8 +22,8 @@
   </a-layout>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, h } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, reactive, h, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import {
   ProfileOutlined,
   CodeOutlined,
@@ -31,10 +31,47 @@ import {
   FieldBinaryOutlined
 } from '@ant-design/icons-vue'
 const router = useRouter()
+const route = useRoute()
 const state = reactive({
   selectedKeys: ['Homepage'],
   openKeys: ['Calander'],
-  rootSubmenuKeys: ['Calander', 'CodeGenerator']
+  rootSubmenuKeys: ['Calander', 'NumberTool', 'CodeGenerator']
+})
+
+// 根据当前路由设置 selectedKeys 和 openKeys
+function setMenuStateFromRoute() {
+  let selectedKey = 'Homepage'
+  let openKey = ''
+
+  switch (route.name) {
+    case 'TimestampConversion':
+    case 'CalendarConversion':
+    case 'HolidayLookup':
+      selectedKey = route.name
+      openKey = 'Calander'
+      break
+    case 'NumberDeal':
+      selectedKey = 'NumberDeal'
+      openKey = 'NumberTool'
+      break
+    case 'GenerateByTable':
+    case 'GenerateBySQL':
+      selectedKey = route.name
+      openKey = 'CodeGenerator'
+      break
+    // 其他情况...
+    default:
+      selectedKey = 'Homepage'
+      openKey = ''
+  }
+
+  state.selectedKeys = [selectedKey]
+  state.openKeys = [openKey]
+}
+
+// 在组件挂载时调用函数
+onMounted(() => {
+  setMenuStateFromRoute()
 })
 
 const onOpenChange = (openKeys: string[]) => {
@@ -83,13 +120,13 @@ const items = ref([
     ]
   },
   {
-    key: 'Number',
+    key: 'NumberTool',
     icon: () => h(FieldBinaryOutlined),
     label: '数字工具',
     children: [
       {
-        key: 'NumberTool',
-        label: '数字工具',
+        key: 'NumberDeal',
+        label: '数字去重&排序',
         to: '/number-tool'
       }
     ]
