@@ -24,7 +24,12 @@
 <script lang="ts" setup>
 import { ref, reactive, h } from 'vue'
 import { useRouter } from 'vue-router'
-import { ProfileOutlined, CodeOutlined, CalendarOutlined } from '@ant-design/icons-vue'
+import {
+  ProfileOutlined,
+  CodeOutlined,
+  CalendarOutlined,
+  FieldBinaryOutlined
+} from '@ant-design/icons-vue'
 const router = useRouter()
 const state = reactive({
   selectedKeys: ['Homepage'],
@@ -74,6 +79,18 @@ const items = ref([
         key: 'HolidayLookup',
         label: '节假日查询',
         to: '/holiday-lookup'
+      }
+    ]
+  },
+  {
+    key: 'Number',
+    icon: () => h(FieldBinaryOutlined),
+    label: '数字工具',
+    children: [
+      {
+        key: 'NumberTool',
+        label: '数字工具',
+        to: '/number-tool'
       }
     ]
   },

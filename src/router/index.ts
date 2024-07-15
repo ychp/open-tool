@@ -17,6 +17,11 @@ const routers = [
     component: () => import('@/components/calander/TimestampConversion/TimestampConversion.vue')
   },
   {
+    path: '/number-tool',
+    name: 'NumberTool',
+    component: () => import('@/components/number/NumberTool/NumberTool.vue')
+  },
+  {
     path: '/mahjong-score',
     name: 'MahjongScoreCalculator',
     component: () =>
