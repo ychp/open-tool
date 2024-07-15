@@ -11,9 +11,15 @@
       </span>
     </a-flex>
     <a-flex class="input-section">
-      <!-- 时间戳和日期时间输入组件 -->
       <a-row class="title">
-        <a-col :span="24"><h3>时间戳转换</h3></a-col>
+        <a-col :span="24">
+          <a-flex :vertical="false">
+            <div style="width: 90px"><h3>时间戳转换</h3></div>
+            <div style="width: 500px; line-height: normal; overflow: visible">
+              <span>在对应格式输入框内输入，回车/输入框失焦后自动刷新其他格式的时间</span>
+            </div>
+          </a-flex>
+        </a-col>
       </a-row>
       <a-row>
         <a-col :span="6" class="item">
@@ -64,7 +70,6 @@
       </a-row>
     </a-flex>
     <a-flex class="input-section">
-      <!-- 时间戳和日期时间输入组件 -->
       <a-row class="title">
         <a-col :span="24"><h3>时间转秒/毫秒</h3></a-col>
       </a-row>
@@ -88,6 +93,7 @@
             type="number"
             v-model:value="timeInfo.seconds"
             style="width: 200px"
+            disabled
           />
         </a-col>
         <a-col :span="8" class="item">
@@ -97,6 +103,7 @@
             type="number"
             v-model:value="timeInfo.milli"
             style="width: 120px"
+            disabled
           />
         </a-col>
       </a-row>
