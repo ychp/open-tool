@@ -9,23 +9,34 @@ const routers = [
   {
     path: '/calendar-convert',
     name: 'CalendarConversion',
-    component: () => import('@/components/calander/CalendarConversion/CalendarConversion.vue')
+    component: () => import('@/components/calander/calendar-conversion/CalendarConversion.vue')
   },
   {
     path: '/timestamp-convert',
     name: 'TimestampConversion',
-    component: () => import('@/components/calander/TimestampConversion/TimestampConversion.vue')
+    component: () => import('@/components/calander/timestamp-conversion/TimestampConversion.vue')
   },
   {
     path: '/number-tool',
     name: 'NumberDeal',
-    component: () => import('@/components/number/NumberTool/NumberTool.vue')
+    component: () => import('@/components/number/number-tool/NumberTool.vue')
+  },
+  {
+    path: '/math-calculator',
+    name: 'MathCalculator',
+    component: () => import('@/components/number/math-calculator/MathCalculator.vue')
+  },
+
+  {
+    path: '/keyword-extractor',
+    name: 'KeywordExtractor',
+    component: () => import('@/components/string-utils/keyword-extractor/KeywordExtractor.vue')
   },
   {
     path: '/mahjong-score',
     name: 'MahjongScoreCalculator',
     component: () =>
-      import('@/components/amusement/MahjongScoreCalculator/MahjongScoreCalculator.vue')
+      import('@/components/amusement/mahjong-score-calculator/MahjongScoreCalculator.vue')
   },
   {
     path: '/holiday-lookup',

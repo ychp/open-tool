@@ -28,14 +28,15 @@ import {
   ProfileOutlined,
   CodeOutlined,
   CalendarOutlined,
-  FieldBinaryOutlined
+  FieldBinaryOutlined,
+  FieldStringOutlined
 } from '@ant-design/icons-vue'
 const router = useRouter()
 const route = useRoute()
 const state = reactive({
   selectedKeys: ['Homepage'],
   openKeys: ['Calander'],
-  rootSubmenuKeys: ['Calander', 'NumberTool', 'CodeGenerator']
+  rootSubmenuKeys: ['Calander', 'NumberUtils', 'StringUtils', 'CodeGenerator']
 })
 
 // 根据当前路由设置 selectedKeys 和 openKeys
@@ -51,8 +52,13 @@ function setMenuStateFromRoute() {
       openKey = 'Calander'
       break
     case 'NumberDeal':
-      selectedKey = 'NumberDeal'
-      openKey = 'NumberTool'
+    case 'MathCalculator':
+      selectedKey = route.name
+      openKey = 'NumberUtils'
+      break
+    case 'KeywordExtractor':
+      selectedKey = route.name
+      openKey = 'StringUtils'
       break
     case 'GenerateByTable':
     case 'GenerateBySQL':
@@ -120,7 +126,7 @@ const items = ref([
     ]
   },
   {
-    key: 'NumberTool',
+    key: 'NumberUtils',
     icon: () => h(FieldBinaryOutlined),
     label: '数字工具',
     children: [
@@ -128,6 +134,23 @@ const items = ref([
         key: 'NumberDeal',
         label: '数字去重&排序',
         to: '/number-tool'
+      },
+      {
+        key: 'MathCalculator',
+        label: '简单计算器',
+        to: '/math-calculator'
+      }
+    ]
+  },
+  {
+    key: 'StringUtils',
+    icon: () => h(FieldStringOutlined),
+    label: '文本工具',
+    children: [
+      {
+        key: 'KeywordExtractor',
+        label: '文本提取器',
+        to: '/keyword-extractor'
       }
     ]
   },
