@@ -29,7 +29,7 @@
         />
         <a-input
           class="input"
-          placeholder="请输入需要在结果中清除的关键字"
+          placeholder="请输入需要清除的关键字"
           type="text"
           v-model:value="extractor.clearKeyWord"
           style="width: 200px"
@@ -170,7 +170,7 @@ const copyResult = async function () {
 }
 
 .content {
-  width: 40%;
+  width: 45%;
 }
 
 .icon {
@@ -179,6 +179,6 @@ const copyResult = async function () {
 }
 
 .result {
-  width: 40%;
+  width: 45%;
 }
 </style>
