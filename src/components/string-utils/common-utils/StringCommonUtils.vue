@@ -47,7 +47,12 @@
           :rows="20"
         />
         <a-label class="icon">=></a-label>
-        <a-textarea class="result" v-model:value="extractor.result" :rows="20" />
+        <a-textarea
+          class="result"
+          placeholder="结果文本"
+          v-model:value="extractor.result"
+          :rows="20"
+        />
       </div>
     </a-flex>
   </div>
