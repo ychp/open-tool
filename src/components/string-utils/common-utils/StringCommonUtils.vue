@@ -2,19 +2,22 @@
   <div class="app-container">
     <a-flex :vertical="true">
       <div class="operate-description">
-        <p>功能说明:</p>
-        <p>
-          1.信息提取: 输入对应的正则表达式, 点击“执行”, 按行提取出匹配部分的信息,
-          如果当前行无匹配数据则跳过
-        </p>
-        <p>2.删除关键字: 填写需要清除的关键字, 多个关键字用英文逗号分割</p>
-        <p style="padding-left: 16px">
-          2.1.如果操作信息提取时已经填写了关键字, 则在提取信息同时会清除对应的关键字;
-        </p>
-        <p style="padding-left: 16px">
-          2.2.如果已经提取了信息则可通过“删除关键字”按钮基于提取结果删除对应的关键字
-        </p>
-        <p>3.文本去重: 按行对结果数据进行去重操作</p>
+        <a-collapse v-model:activeKey="activeKey" collapsible="header">
+          <a-collapse-panel key="1" header="功能说明">
+            <p>
+              1.信息提取: 输入对应的正则表达式, 点击“执行”, 按行提取出匹配部分的信息,
+              如果当前行无匹配数据则跳过
+            </p>
+            <p>2.删除关键字: 填写需要清除的关键字, 多个关键字用英文逗号分割</p>
+            <p style="padding-left: 16px">
+              2.1.如果操作信息提取时已经填写了关键字, 则在提取信息同时会清除对应的关键字;
+            </p>
+            <p style="padding-left: 16px">
+              2.2.如果已经提取了信息则可通过“删除关键字”按钮基于提取结果删除对应的关键字
+            </p>
+            <p>3.文本去重: 按行对结果数据进行去重操作</p>
+          </a-collapse-panel>
+        </a-collapse>
       </div>
       <div class="operate">
         <a-input
@@ -31,7 +34,7 @@
           v-model:value="extractor.clearKeyWord"
           style="width: 200px"
         />
-        <a-button class="btn" @click="extractContent">执行</a-button>
+        <a-button class="btn" @click="extractContent">提取</a-button>
         <a-button class="btn" @click="remvoKeyWord">删除关键字</a-button>
         <a-button class="btn" @click="remvoDuplicate">去重</a-button>
         <a-button class="btn" @click="copyResult">复制结果</a-button>
@@ -44,14 +47,14 @@
           :rows="20"
         />
         <a-label class="icon">=></a-label>
-        <a-textarea class="result" v-model:value="extractor.result" :rows="20" disabled />
+        <a-textarea class="result" v-model:value="extractor.result" :rows="20" />
       </div>
     </a-flex>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 interface Extractor {
   content: string
@@ -66,6 +69,8 @@ const extractor = reactive<Extractor>({
   clearKeyWord: '',
   result: ''
 })
+
+const activeKey = ref(['0'])
 
 const remvoDuplicate = async function () {
   let stringArray = splitText(extractor.result)
