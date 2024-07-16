@@ -56,7 +56,7 @@ function setMenuStateFromRoute() {
       selectedKey = route.name
       openKey = 'NumberUtils'
       break
-    case 'KeywordExtractor':
+    case 'StringCommonUtils':
       selectedKey = route.name
       openKey = 'StringUtils'
       break
@@ -148,9 +148,9 @@ const items = ref([
     label: '文本工具',
     children: [
       {
-        key: 'KeywordExtractor',
-        label: '文本提取器',
-        to: '/keyword-extractor'
+        key: 'StringCommonUtils',
+        label: '文本处理工具',
+        to: '/string-common-utils'
       }
     ]
   },

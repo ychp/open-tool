@@ -26,11 +26,10 @@ const routers = [
     name: 'MathCalculator',
     component: () => import('@/components/number/math-calculator/MathCalculator.vue')
   },
-
   {
-    path: '/keyword-extractor',
-    name: 'KeywordExtractor',
-    component: () => import('@/components/string-utils/keyword-extractor/KeywordExtractor.vue')
+    path: '/string-common-utils',
+    name: 'StringCommonUtils',
+    component: () => import('@/components/string-utils/common-utils/StringCommonUtils.vue')
   },
   {
     path: '/mahjong-score',
