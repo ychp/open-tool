@@ -47,8 +47,17 @@
         <Text strong>摸鱼倒计时</Text>
       </template>
       <a-row class="row">
-        <a-col :span="24" class="count-down col">
+        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend > 0">
           距离周末还有 {{ todayInfo.leftDaysByWeekend }} 天
+        </a-col>
+        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend == 0">
+          明天就周末了，再坚持一下。
+        </a-col>
+        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend == -1">
+          今天周末啦！！！
+        </a-col>
+        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend == -2">
+          明天要上班，惊不惊喜，意不意外 ->.->
         </a-col>
       </a-row>
       <a-row class="row" v-for="{ name, leftDays } in todayInfo.leftDaysByHoliday" :key="name">
@@ -87,7 +96,6 @@ const todayInfo = reactive<TodayInfo>({
 })
 
 onMounted(() => {
-  todayInfo.leftDaysByWeekend = 5 - todayInfo.today.getWeek()
   calHolidayCountDown()
 })
 
@@ -109,6 +117,8 @@ const refreshDate = async () => {
 }
 
 const calHolidayCountDown = async () => {
+  const currentWeek = todayInfo.today.getWeek()
+  todayInfo.leftDaysByWeekend = currentWeek == 0 ? -2 : 5 - currentWeek
   let holidays = HolidayUtil.getHolidays(todayInfo.today.getYear())
   holidays = holidays.filter((item) => !item.isWork())
 
