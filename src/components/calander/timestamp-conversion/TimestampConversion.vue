@@ -108,6 +108,23 @@
         </a-col>
       </a-row>
     </a-flex>
+    <a-flex class="input-section">
+      <a-row class="title">
+        <a-col :span="24"><h3>时间计算</h3></a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="6" class="item">
+          开始时间:
+          <a-date-picker v-model:value="dateCalculateInfo.startDate" />
+        </a-col>
+        <a-col :span="8" class="item">
+          <label for="datetime-input">时间相减</label>
+          结束时间:
+          <a-date-picker v-model:value="dateCalculateInfo.endDate" @blur="diffDays()" />
+          = {{ dateCalculateInfo.diffDays }} 天
+        </a-col>
+      </a-row>
+    </a-flex>
   </div>
 </template>
 
@@ -116,6 +133,7 @@ import axios from 'axios'
 import { onMounted, reactive } from 'vue'
 import { SyncOutlined } from '@ant-design/icons-vue'
 import moment from 'moment'
+import dayjs, { Dayjs } from 'dayjs'
 
 interface DateInfo {
   timestamp: Number
@@ -124,12 +142,6 @@ interface DateInfo {
   dateStrYMd: string
   internetCurrentTimeStamp: Number
   internetCurrentDateTime: string
-}
-
-interface TimeInfo {
-  timeStr: string
-  seconds: Number
-  milli: Number
 }
 
 const dateInfo = reactive<DateInfo>({
@@ -141,10 +153,28 @@ const dateInfo = reactive<DateInfo>({
   internetCurrentDateTime: moment().format('YYYY-MM-DD HH:mm:ss')
 })
 
+interface TimeInfo {
+  timeStr: string
+  seconds: Number
+  milli: Number
+}
+
 const timeInfo = reactive<TimeInfo>({
   timeStr: '1d',
   seconds: 24 * 60 * 60,
   milli: 24 * 60 * 60 * 1000
+})
+
+interface DateCalculateInfo {
+  startDate: Dayjs
+  endDate: Dayjs
+  diffDays: Number
+}
+
+const dateCalculateInfo = reactive<DateCalculateInfo>({
+  startDate: dayjs(),
+  endDate: dayjs(),
+  diffDays: 0
 })
 
 onMounted(() => {
@@ -231,6 +261,12 @@ const calTime = async function () {
   const { days, hours, minutes, seconds } = parseDuration(timeInfo.timeStr)
   timeInfo.seconds = days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds
   timeInfo.milli = Number(timeInfo.seconds) * 1000
+}
+
+const diffDays = async function () {
+  const start = dateCalculateInfo.startDate.toDate()
+  const end = dateCalculateInfo.endDate.toDate()
+  dateCalculateInfo.diffDays = Math.floor((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000))
 }
 
 function parseDuration(durationStr: string): {
