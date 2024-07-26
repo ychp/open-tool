@@ -138,7 +138,7 @@
             v-model:value="dateCalculateInfo.calDays"
             @blur="calDate()"
             @pressEnter="calDate()"
-            style="width: 50px"
+            style="width: 100px"
           />
           天后为 {{ moment(dateCalculateInfo.calDate.toDate()).format('YYYY-MM-DD') }}
         </a-col>
