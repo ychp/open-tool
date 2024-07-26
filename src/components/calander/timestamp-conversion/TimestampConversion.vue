@@ -115,13 +115,32 @@
       <a-row>
         <a-col :span="6" class="item">
           开始时间:
-          <a-date-picker v-model:value="dateCalculateInfo.startDate" />
+          <a-date-picker
+            v-model:value="dateCalculateInfo.startDate"
+            placement="topLeft"
+            @change="refreshDateCal()"
+          />
         </a-col>
         <a-col :span="8" class="item">
-          <label for="datetime-input">时间相减</label>
-          结束时间:
-          <a-date-picker v-model:value="dateCalculateInfo.endDate" @blur="diffDays()" />
-          = {{ dateCalculateInfo.diffDays }} 天
+          截止:
+          <a-date-picker
+            v-model:value="dateCalculateInfo.endDate"
+            @change="diffDays()"
+            placement="topLeft"
+          />
+          相差 {{ dateCalculateInfo.diffDays }} 天
+        </a-col>
+        <a-col :span="8" class="item">
+          增加:
+          <a-input
+            id="datetime-input"
+            type="number"
+            v-model:value="dateCalculateInfo.calDays"
+            @blur="calDate()"
+            @pressEnter="calDate()"
+            style="width: 50px"
+          />
+          天后为 {{ moment(dateCalculateInfo.calDate.toDate()).format('YYYY-MM-DD') }}
         </a-col>
       </a-row>
     </a-flex>
@@ -169,12 +188,16 @@ interface DateCalculateInfo {
   startDate: Dayjs
   endDate: Dayjs
   diffDays: Number
+  calDays: Number
+  calDate: Dayjs
 }
 
 const dateCalculateInfo = reactive<DateCalculateInfo>({
   startDate: dayjs(),
   endDate: dayjs(),
-  diffDays: 0
+  diffDays: 0,
+  calDays: 0,
+  calDate: dayjs()
 })
 
 onMounted(() => {
@@ -263,10 +286,20 @@ const calTime = async function () {
   timeInfo.milli = Number(timeInfo.seconds) * 1000
 }
 
+const refreshDateCal = async function () {
+  diffDays()
+  calDate()
+}
+
 const diffDays = async function () {
   const start = dateCalculateInfo.startDate.toDate()
   const end = dateCalculateInfo.endDate.toDate()
   dateCalculateInfo.diffDays = Math.floor((end.getTime() - start.getTime()) / (24 * 60 * 60 * 1000))
+}
+
+const calDate = async function () {
+  const calDate = dateCalculateInfo.startDate.add(Number(dateCalculateInfo.calDays), 'days')
+  dateCalculateInfo.calDate = calDate
 }
 
 function parseDuration(durationStr: string): {
