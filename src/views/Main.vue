@@ -62,6 +62,7 @@ function setMenuStateFromRoute() {
       openKey = 'NumberUtils'
       break
     case 'StringCommonUtils':
+    case 'TextDifference':
       selectedKey = route.name
       openKey = 'StringUtils'
       break
@@ -156,6 +157,11 @@ const items = ref([
         key: 'StringCommonUtils',
         label: '文本处理工具',
         to: '/string-common-utils'
+      },
+      {
+        key: 'TextDifference',
+        label: '文本比对',
+        to: '/text-difference'
       }
     ]
   },
