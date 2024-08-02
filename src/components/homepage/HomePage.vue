@@ -44,7 +44,7 @@
     </a-card>
     <a-card class="holiday-card">
       <template #title>
-        <Text strong>摸鱼倒计时</Text>
+        <Text strong>假期倒计时</Text>
       </template>
       <a-row class="row">
         <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend > 0">
