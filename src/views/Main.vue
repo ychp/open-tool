@@ -14,12 +14,22 @@
       >
       </a-menu>
     </a-layout-sider>
-    <a-layout>
+    <a-layout :style="{ minHeight: '100vh' }">
       <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '600px' }"
+        :style="{
+          margin: '24px 16px',
+          padding: '24px',
+          background: '#fff',
+          minHeight: '500px'
+        }"
       >
         <router-view></router-view>
       </a-layout-content>
+      <a-layout-footer class="footer">
+        <a-button type="link" href="https://github.com/ychp/open-tool" target="_blank"
+          ><CodeOutlined />源代码</a-button
+        >
+      </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
@@ -239,5 +249,9 @@ const items = ref([
 
 [data-theme='dark'] .site-layout .site-layout-background {
   background: #141414;
+}
+
+.footer {
+  text-align: center;
 }
 </style>

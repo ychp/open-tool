@@ -44,7 +44,6 @@ const calculate = async function () {
 <style scoped>
 .app-container {
   padding-top: 10px;
-  min-height: 100vh; /* 确保容器至少占据整个视口高度 */
 }
 .btn {
   margin-left: 10px;

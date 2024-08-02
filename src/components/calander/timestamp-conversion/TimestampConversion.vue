@@ -350,7 +350,6 @@ function parseDuration(durationStr: string): {
 .app-container {
   flex-direction: column;
   align-items: center;
-  min-height: 100vh; /* 确保容器至少占据整个视口高度 */
 }
 
 .internet-time-display {

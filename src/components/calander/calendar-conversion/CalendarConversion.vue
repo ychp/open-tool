@@ -155,7 +155,7 @@ watch(
   border-radius: 2px;
   background-color: #fafafa;
   text-align: center;
-  min-height: 500px;
+  min-height: 300px;
   padding: 16px 15px 0px 15px;
 }
 </style>

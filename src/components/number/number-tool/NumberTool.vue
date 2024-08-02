@@ -72,7 +72,6 @@ function parseNumber2Text(numberArray: Array<Number>) {
 .app-container {
   flex-direction: column;
   align-items: center;
-  min-height: 100vh; /* 确保容器至少占据整个视口高度 */
 }
 
 .operate {
