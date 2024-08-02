@@ -116,7 +116,7 @@ const items = ref([
   {
     key: 'Homepage',
     icon: () => h(HomeOutlined),
-    label: '简介',
+    label: '主页',
     to: '/'
   },
   {
