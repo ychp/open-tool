@@ -89,8 +89,6 @@ interface TodayInfo {
   month: number
   day: number
   leftDaysByWeekend: number
-  leftDaysByConcert: number
-  leftDaysByWedding: number
   leftDaysByOther: Array<HolidayInfo>
   leftDaysByHoliday: Array<HolidayInfo>
 }
@@ -108,8 +106,6 @@ const todayInfo = reactive<TodayInfo>({
   day: Solar.fromDate(new Date()).getDay(),
   leftDaysByWeekend: 0,
   leftDaysByOther: [],
-  leftDaysByConcert: 0,
-  leftDaysByWedding: 0,
   leftDaysByHoliday: []
 })
 
