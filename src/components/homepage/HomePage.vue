@@ -46,16 +46,9 @@
       <template #title>
         <Text strong>假期倒计时</Text>
       </template>
-      <a-row class="row">
-        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByConcert > 0">
-          距离《苏打绿重庆演唱会》还有
-          <span style="color: red">{{ todayInfo.leftDaysByConcert }}</span> 天
-        </a-col>
-      </a-row>
-      <a-row class="row">
-        <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWedding > 0">
-          距离 2024-09-26 还有
-          <span style="color: red">{{ todayInfo.leftDaysByWedding }}</span> 天
+      <a-row class="row" v-for="{ name, leftDays } in todayInfo.leftDaysByOther" :key="name">
+        <a-col :span="24" class="count-down col"
+          >距离 {{ name }} 还有 <span style="color: red">{{ leftDays }}</span> 天
         </a-col>
       </a-row>
       <a-row class="row">
