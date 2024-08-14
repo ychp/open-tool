@@ -26,8 +26,14 @@
         <router-view></router-view>
       </a-layout-content>
       <a-layout-footer class="footer">
-        <a-button type="link" href="https://github.com/ychp/open-tool" target="_blank"
-          ><CodeOutlined />源代码</a-button
+        <p>
+          © 2024 Create By 云止.
+          <a-button type="link" href="https://github.com/ychp/open-tool" target="_blank"
+            ><CodeOutlined />源代码</a-button
+          >
+        </p>
+        <a-button type="link" href="https://beian.miit.gov.cn/" target="_blank"
+          >备案号: 浙ICP备2024102079号-2</a-button
         >
       </a-layout-footer>
     </a-layout>
