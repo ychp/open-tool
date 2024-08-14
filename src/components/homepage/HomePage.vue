@@ -121,34 +121,37 @@ const refreshDate = async () => {
   todayInfo.month = todayInfo.today.getMonth()
   todayInfo.day = todayInfo.today.getDay()
   todayInfo.leftDaysByOther = []
-  todayInfo.leftDaysByOther.push(
-    reactive<HolidayInfo>({
-      name: '《苏打绿重庆演唱会》',
-      date: Solar.fromYmd(2024, 8, 16),
-      leftDays:
-        Solar.fromYmd(2024, 8, 16).subtract(
-          Solar.fromYmd(
-            todayInfo.today.getYear(),
-            todayInfo.today.getMonth(),
-            todayInfo.today.getDay()
-          )
-        ) - 1
-    })
-  )
-  todayInfo.leftDaysByOther.push(
-    reactive<HolidayInfo>({
-      name: '2024-09-26',
-      date: Solar.fromYmd(2024, 9, 26),
-      leftDays:
-        Solar.fromYmd(2024, 9, 26).subtract(
-          Solar.fromYmd(
-            todayInfo.today.getYear(),
-            todayInfo.today.getMonth(),
-            todayInfo.today.getDay()
-          )
-        ) - 1
-    })
-  )
+  const domain = window.location.hostname
+  if (domain.includes('yingchengpeng.com')) {
+    todayInfo.leftDaysByOther.push(
+      reactive<HolidayInfo>({
+        name: '《苏打绿重庆演唱会》',
+        date: Solar.fromYmd(2024, 8, 16),
+        leftDays:
+          Solar.fromYmd(2024, 8, 16).subtract(
+            Solar.fromYmd(
+              todayInfo.today.getYear(),
+              todayInfo.today.getMonth(),
+              todayInfo.today.getDay()
+            )
+          ) - 1
+      })
+    )
+    todayInfo.leftDaysByOther.push(
+      reactive<HolidayInfo>({
+        name: '2024-09-26',
+        date: Solar.fromYmd(2024, 9, 26),
+        leftDays:
+          Solar.fromYmd(2024, 9, 26).subtract(
+            Solar.fromYmd(
+              todayInfo.today.getYear(),
+              todayInfo.today.getMonth(),
+              todayInfo.today.getDay()
+            )
+          ) - 1
+      })
+    )
+  }
   calHolidayCountDown()
 }
 
@@ -208,6 +211,9 @@ const calHolidayCountDown = async () => {
 <style scoped>
 .calendar-card {
   width: 40%;
+  min-width: 500px;
+  max-width: 550px;
+  height: 450px;
   margin-right: 16px;
   margin-bottom: 16px;
 }
@@ -277,5 +283,6 @@ const calHolidayCountDown = async () => {
 
 .holiday-card {
   width: 45%;
+  max-width: 500px;
 }
 </style>
