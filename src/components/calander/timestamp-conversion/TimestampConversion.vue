@@ -46,9 +46,9 @@
           />
         </a-col>
         <a-col :span="6" class="item">
-          <label for="datetime-input">年-月-日</label>
+          <label for="date-input">年-月-日</label>
           <a-input
-            id="datetime-input"
+            id="date-input"
             type="text"
             v-model:value="dateInfo.dateStr"
             @blur="updateAllFields('date')"
@@ -57,9 +57,9 @@
           />
         </a-col>
         <a-col :span="6" class="item">
-          <label for="datetime-input">年月日</label>
+          <label for="date-ymd-input">年月日</label>
           <a-input
-            id="datetime-input"
+            id="date-ymd-input"
             type="text"
             v-model:value="dateInfo.dateStrYMd"
             @blur="updateAllFields('dateYMd')"
@@ -75,9 +75,9 @@
       </a-row>
       <a-row>
         <a-col :span="8" class="item">
-          <label for="timestamp-input">时间(日时分秒，输入格式为 1d3h15m30s)</label>
+          <label for="cal-timestamp-input">时间(日时分秒，输入格式为 1d3h15m30s)</label>
           <a-input
-            id="timestamp-input"
+            id="cal-timestamp-input"
             placeholder="输入时间"
             type="text"
             v-model:value="timeInfo.timeStr"
@@ -87,9 +87,9 @@
           />
         </a-col>
         <a-col :span="8" class="item">
-          <label for="datetime-input">秒(s)</label>
+          <label for="seconds-input">秒(s)</label>
           <a-input
-            id="datetime-input"
+            id="seconds-input"
             type="number"
             v-model:value="timeInfo.seconds"
             style="width: 200px"
@@ -97,9 +97,9 @@
           />
         </a-col>
         <a-col :span="8" class="item">
-          <label for="datetime-input">毫秒(ms)</label>
+          <label for="millis-input">毫秒(ms)</label>
           <a-input
-            id="datetime-input"
+            id="millis-input"
             type="number"
             v-model:value="timeInfo.milli"
             style="width: 120px"
@@ -116,6 +116,7 @@
         <a-col :span="6" class="item">
           开始时间:
           <a-date-picker
+            id="start-date"
             v-model:value="dateCalculateInfo.startDate"
             placement="topLeft"
             @change="refreshDateCal()"
@@ -124,6 +125,7 @@
         <a-col :span="8" class="item">
           截止:
           <a-date-picker
+            id="end-date"
             v-model:value="dateCalculateInfo.endDate"
             @change="diffDays()"
             placement="topLeft"
@@ -133,7 +135,7 @@
         <a-col :span="8" class="item">
           增加:
           <a-input
-            id="datetime-input"
+            id="day-input"
             type="number"
             v-model:value="dateCalculateInfo.calDays"
             @blur="calDate()"
