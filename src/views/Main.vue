@@ -260,4 +260,20 @@ const items = ref([
 .footer {
   text-align: center;
 }
+
+.width-80 {
+  width: 120px;
+}
+
+.width-120 {
+  width: 120px;
+}
+
+.width-240 {
+  width: 240px;
+}
+
+.width-360 {
+  width: 360px;
+}
 </style>
