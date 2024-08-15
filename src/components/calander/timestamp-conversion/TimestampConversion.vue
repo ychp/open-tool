@@ -1,144 +1,142 @@
 <template>
-  <div class="app-container">
-    <a-collapse v-model:activeKey="activeKey">
-      <a-collapse-panel key="timestamp-formart" header="时间戳转换" class="panel">
-        <a-row class="card-row">
-          <a-col :span="3" class="card-col"> 时间戳(毫秒) </a-col>
-          <a-col :span="6" class="card-col">
-            <a-input
-              id="timestamp-input"
-              placeholder="输入时间戳"
-              type="number"
-              v-model:value="dateInfo.timestamp"
-              @blur="updateAllFields('timestamp')"
-              @pressEnter="updateAllFields('timestamp')"
-              style="width: 160px"
+  <a-collapse v-model:activeKey="activeKey">
+    <a-collapse-panel key="timestamp-formart" header="时间戳转换" class="panel">
+      <a-row class="card-row">
+        <a-col :span="3" class="card-col"> 时间戳(毫秒) </a-col>
+        <a-col :span="6" class="card-col">
+          <a-input
+            id="timestamp-input"
+            placeholder="输入时间戳"
+            type="number"
+            v-model:value="dateInfo.timestamp"
+            @blur="updateAllFields('timestamp')"
+            @pressEnter="updateAllFields('timestamp')"
+            style="width: 160px"
+          />
+          <a-tooltip title="获取互联网北京时间">
+            <a-button
+              type="ghost"
+              shape="circle"
+              :loading="iconLoading"
+              :icon="h(SyncOutlined)"
+              @click="fetchInternetTime"
+              size="small"
+              style="margin-left: 10px"
             />
-            <a-tooltip title="获取互联网北京时间">
-              <a-button
-                type="ghost"
-                shape="circle"
-                :loading="iconLoading"
-                :icon="h(SyncOutlined)"
-                @click="fetchInternetTime"
-                size="small"
-                style="margin-left: 10px"
-              />
-            </a-tooltip>
-          </a-col>
-          <a-col :span="4" class="card-col"> 年-月-日 时:分:秒 </a-col>
-          <a-col :span="6" class="card-col">
-            <a-input
-              id="datetime-input"
-              type="text"
-              v-model:value="dateInfo.dateTimeStr"
-              @blur="updateAllFields('dateTime')"
-              @pressEnter="updateAllFields('dateTime')"
-              style="width: 180px"
-            />
-          </a-col>
-        </a-row>
-        <a-row class="card-row">
-          <a-col :span="3" class="card-col"> 年-月-日 </a-col>
-          <a-col :span="6" class="card-col">
-            <a-input
-              id="date-input"
-              type="text"
-              v-model:value="dateInfo.dateStr"
-              @blur="updateAllFields('date')"
-              @pressEnter="updateAllFields('date')"
-              style="width: 160px"
-            />
-          </a-col>
-          <a-col :span="4" class="card-col"> 年月日 </a-col>
-          <a-col :span="6" class="card-col">
-            <a-input
-              id="date-ymd-input"
-              type="text"
-              v-model:value="dateInfo.dateStrYMd"
-              @blur="updateAllFields('dateYMd')"
-              @pressEnter="updateAllFields('dateYMd')"
-              style="width: 180px"
-            />
-          </a-col>
-        </a-row>
-      </a-collapse-panel>
-      <a-collapse-panel key="timestamp-convert" header="时间转秒/毫秒" class="panel">
-        <a-row class="card-row">
-          <a-col :span="8" class="card-col">
-            <a-input
-              id="cal-timestamp-input"
-              placeholder="日时分秒，输入格式为 1d3h15m30s"
-              type="text"
-              v-model:value="timeInfo.timeStr"
-              @blur="calTime()"
-              @pressEnter="calTime()"
-              style="width: 260px"
-            />
-          </a-col>
-          <a-col :span="2" class="card-col"> 秒(s) </a-col>
-          <a-col :span="5" class="card-col">
-            <a-input
-              id="seconds-input"
-              type="number"
-              v-model:value="timeInfo.seconds"
-              style="width: 160px"
-              disabled
-            />
-          </a-col>
-          <a-col :span="2" class="card-col"> 毫秒(ms) </a-col>
-          <a-col :span="5" class="card-col">
-            <a-input
-              id="millis-input"
-              type="number"
-              v-model:value="timeInfo.milli"
-              style="width: 160px"
-              disabled
-            />
-          </a-col>
-        </a-row>
-      </a-collapse-panel>
-      <a-collapse-panel key="date-cal" header="时间计算" class="panel">
-        <a-row class="card-row">
-          <a-col :span="2" class="card-col"> 开始时间 </a-col>
-          <a-col :span="6" class="card-col">
-            <a-date-picker
-              id="start-date"
-              v-model:value="dateCalculateInfo.startDate"
-              placement="topLeft"
-              @change="refreshDateCal()"
-            />
-          </a-col>
-        </a-row>
-        <a-row class="card-row">
-          <a-col :span="2" class="card-col"> 截止 </a-col>
-          <a-col :span="4" class="card-col">
-            <a-date-picker
-              id="end-date"
-              v-model:value="dateCalculateInfo.endDate"
-              @change="diffDays()"
-              placement="topLeft"
-            />
-          </a-col>
-          <a-col :span="3" class="card-col"> 相差 {{ dateCalculateInfo.diffDays }} 天 </a-col>
-          <a-col :span="2" class="card-col"> 增加 </a-col>
-          <a-col :span="3" class="card-col">
-            <a-input
-              id="day-input"
-              type="number"
-              v-model:value="dateCalculateInfo.calDays"
-              @blur="calDate()"
-              @pressEnter="calDate()"
-              style="width: 100px"
-            />
-          </a-col>
-          <a-col :span="4" class="card-col">
-            天后为 {{ moment(dateCalculateInfo.calDate.toDate()).format('YYYY-MM-DD') }}
-          </a-col>
-        </a-row>
-      </a-collapse-panel>
-    </a-collapse>
-  </div>
+          </a-tooltip>
+        </a-col>
+        <a-col :span="4" class="card-col"> 年-月-日 时:分:秒 </a-col>
+        <a-col :span="6" class="card-col">
+          <a-input
+            id="datetime-input"
+            type="text"
+            v-model:value="dateInfo.dateTimeStr"
+            @blur="updateAllFields('dateTime')"
+            @pressEnter="updateAllFields('dateTime')"
+            style="width: 180px"
+          />
+        </a-col>
+      </a-row>
+      <a-row class="card-row">
+        <a-col :span="3" class="card-col"> 年-月-日 </a-col>
+        <a-col :span="6" class="card-col">
+          <a-input
+            id="date-input"
+            type="text"
+            v-model:value="dateInfo.dateStr"
+            @blur="updateAllFields('date')"
+            @pressEnter="updateAllFields('date')"
+            style="width: 160px"
+          />
+        </a-col>
+        <a-col :span="4" class="card-col"> 年月日 </a-col>
+        <a-col :span="6" class="card-col">
+          <a-input
+            id="date-ymd-input"
+            type="text"
+            v-model:value="dateInfo.dateStrYMd"
+            @blur="updateAllFields('dateYMd')"
+            @pressEnter="updateAllFields('dateYMd')"
+            style="width: 180px"
+          />
+        </a-col>
+      </a-row>
+    </a-collapse-panel>
+    <a-collapse-panel key="timestamp-convert" header="时间转秒/毫秒" class="panel">
+      <a-row class="card-row">
+        <a-col :span="8" class="card-col">
+          <a-input
+            id="cal-timestamp-input"
+            placeholder="日时分秒，输入格式为 1d3h15m30s"
+            type="text"
+            v-model:value="timeInfo.timeStr"
+            @blur="calTime()"
+            @pressEnter="calTime()"
+            style="width: 260px"
+          />
+        </a-col>
+        <a-col :span="2" class="card-col"> 秒(s) </a-col>
+        <a-col :span="5" class="card-col">
+          <a-input
+            id="seconds-input"
+            type="number"
+            v-model:value="timeInfo.seconds"
+            style="width: 160px"
+            disabled
+          />
+        </a-col>
+        <a-col :span="2" class="card-col"> 毫秒(ms) </a-col>
+        <a-col :span="5" class="card-col">
+          <a-input
+            id="millis-input"
+            type="number"
+            v-model:value="timeInfo.milli"
+            style="width: 160px"
+            disabled
+          />
+        </a-col>
+      </a-row>
+    </a-collapse-panel>
+    <a-collapse-panel key="date-cal" header="时间计算" class="panel">
+      <a-row class="card-row">
+        <a-col :span="2" class="card-col"> 开始时间 </a-col>
+        <a-col :span="6" class="card-col">
+          <a-date-picker
+            id="start-date"
+            v-model:value="dateCalculateInfo.startDate"
+            placement="topLeft"
+            @change="refreshDateCal()"
+          />
+        </a-col>
+      </a-row>
+      <a-row class="card-row">
+        <a-col :span="2" class="card-col"> 截止 </a-col>
+        <a-col :span="4" class="card-col">
+          <a-date-picker
+            id="end-date"
+            v-model:value="dateCalculateInfo.endDate"
+            @change="diffDays()"
+            placement="topLeft"
+          />
+        </a-col>
+        <a-col :span="3" class="card-col"> 相差 {{ dateCalculateInfo.diffDays }} 天 </a-col>
+        <a-col :span="2" class="card-col"> 增加 </a-col>
+        <a-col :span="3" class="card-col">
+          <a-input
+            id="day-input"
+            type="number"
+            v-model:value="dateCalculateInfo.calDays"
+            @blur="calDate()"
+            @pressEnter="calDate()"
+            style="width: 100px"
+          />
+        </a-col>
+        <a-col :span="4" class="card-col">
+          天后为 {{ moment(dateCalculateInfo.calDate.toDate()).format('YYYY-MM-DD') }}
+        </a-col>
+      </a-row>
+    </a-collapse-panel>
+  </a-collapse>
 </template>
 
 <script lang="ts" setup>
