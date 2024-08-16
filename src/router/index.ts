@@ -32,6 +32,11 @@ const routers = [
     component: () => import('@/components/string-utils/common-utils/StringCommonUtils.vue')
   },
   {
+    path: '/string-join-and-split',
+    name: 'StringJoinAndSplit',
+    component: () => import('@/components/string-utils/join-and-split/StringJoinAndSplit.vue')
+  },
+  {
     path: '/text-difference',
     name: 'TextDifference',
     component: () => import('@/components/string-utils/text-difference/TextDifference.vue')
