@@ -125,20 +125,6 @@ const refreshDate = async () => {
   if (domain.includes('yingchengpeng.com')) {
     todayInfo.leftDaysByOther.push(
       reactive<HolidayInfo>({
-        name: '《苏打绿重庆演唱会》',
-        date: Solar.fromYmd(2024, 8, 16),
-        leftDays:
-          Solar.fromYmd(2024, 8, 16).subtract(
-            Solar.fromYmd(
-              todayInfo.today.getYear(),
-              todayInfo.today.getMonth(),
-              todayInfo.today.getDay()
-            )
-          ) - 1
-      })
-    )
-    todayInfo.leftDaysByOther.push(
-      reactive<HolidayInfo>({
         name: '2024-09-26',
         date: Solar.fromYmd(2024, 9, 26),
         leftDays:
