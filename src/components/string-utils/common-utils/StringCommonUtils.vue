@@ -64,6 +64,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
+import { copyToClipboard } from '@/components/common/clipboard'
 
 interface Extractor {
   content: string
@@ -143,7 +144,7 @@ function joinArray(array: Array<string>) {
 }
 
 const copyResult = async function () {
-  await navigator.clipboard.writeText(extractor.result)
+  copyToClipboard(extractor.result)
 }
 </script>
 

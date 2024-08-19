@@ -16,6 +16,7 @@
     "@types/diff": "^5.2.1",
     "ant-design-vue": "^4.1.2",
     "axios": "^1.7.2",
+    "clipboard-polyfill": "^4.1.0",
     "diff": "^5.2.0",
     "diff-match-patch": "^1.0.5",
     "lunar-typescript": "^1.7.5",

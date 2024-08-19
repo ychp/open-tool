@@ -72,7 +72,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
+import { copyToClipboard } from '@/components/common/clipboard'
 
 interface StringOperation {
   operationType: string
@@ -172,7 +173,7 @@ function splitText(text: string, delimiter: string): Array<string> {
 }
 
 const copyResult = async function () {
-  await navigator.clipboard.writeText(stringOperation.result)
+  copyToClipboard(stringOperation.result)
 }
 </script>
 
