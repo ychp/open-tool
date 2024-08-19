@@ -42,12 +42,6 @@ const routers = [
     component: () => import('@/components/string-utils/text-difference/TextDifference.vue')
   },
   {
-    path: '/mahjong-score',
-    name: 'MahjongScoreCalculator',
-    component: () =>
-      import('@/components/amusement/mahjong-score-calculator/MahjongScoreCalculator.vue')
-  },
-  {
     path: '/holiday-lookup',
     name: 'HolidayLookup',
     component: () => import('@/components/error/NotSupport.vue')

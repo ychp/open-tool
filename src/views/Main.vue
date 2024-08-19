@@ -205,18 +205,6 @@ const items = ref([
       }
     ]
   }
-  // {
-  //   key: 'Amusement',
-  //   icon: () => h(CodeOutlined),
-  //   label: '娱乐',
-  //   children: [
-  //     {
-  //       key: 'MahjongScoreCalculator',
-  //       label: '麻将分数计算器',
-  //       to: '/mahjong-score'
-  //     }
-  //   ]
-  // }
 ])
 </script>
 <style>
