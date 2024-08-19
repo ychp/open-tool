@@ -179,12 +179,13 @@ const items = ref([
         key: 'StringJoinAndSplit',
         label: '文本合并切分',
         to: '/string-join-and-split'
-      },
-      {
-        key: 'TextDifference',
-        label: '文本比对',
-        to: '/text-difference'
       }
+      // ,
+      // {
+      //   key: 'TextDifference',
+      //   label: '文本比对',
+      //   to: '/text-difference'
+      // }
     ]
   },
   {
