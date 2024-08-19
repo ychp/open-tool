@@ -1,12 +1,13 @@
 <template>
   <div class="app-container">
     <div class="operate">
-      <a-button class="btn" @click="remvoDuplicate">去重</a-button>
-      <a-button class="btn" @click="sortAsc">正向排序</a-button>
-      <a-button class="btn" @click="sortDesc">逆向排序</a-button>
+      <a-button id="remvoDuplicate" class="btn" @click="remvoDuplicate">去重</a-button>
+      <a-button id="sortAsc" class="btn" @click="sortAsc">正向排序</a-button>
+      <a-button id="sortDesc" class="btn" @click="sortDesc">逆向排序</a-button>
     </div>
     <a-flex class="input-section">
       <a-textarea
+        id="numberText"
         v-model:value="numberData.numberText"
         placeholder="请输入数字，换行分割"
         :rows="20"

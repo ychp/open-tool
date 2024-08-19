@@ -21,6 +21,7 @@
       </div>
       <div class="operate">
         <a-input
+          id="expression"
           class="input"
           placeholder="请输入需要提取正则表达式"
           type="text"
@@ -28,26 +29,29 @@
           style="width: 250px"
         />
         <a-input
+          id="clearKeyWord"
           class="input"
           placeholder="请输入需要清除的关键字"
           type="text"
           v-model:value="extractor.clearKeyWord"
           style="width: 200px"
         />
-        <a-button class="btn" @click="extractContent">提取</a-button>
-        <a-button class="btn" @click="remvoKeyWord">删除关键字</a-button>
-        <a-button class="btn" @click="remvoDuplicate">去重</a-button>
-        <a-button class="btn" @click="copyResult">复制结果</a-button>
+        <a-button id="extractContent" class="btn" @click="extractContent">提取</a-button>
+        <a-button id="remvoKeyWord" class="btn" @click="remvoKeyWord">删除关键字</a-button>
+        <a-button id="remvoDuplicate" class="btn" @click="remvoDuplicate">去重</a-button>
+        <a-button id="copyResult" class="btn" @click="copyResult">复制结果</a-button>
       </div>
       <div class="body">
         <a-textarea
+          id="content"
           class="content"
           v-model:value="extractor.content"
           placeholder="请输入原始文本"
           :rows="20"
         />
-        <a-label class="icon">=></a-label>
+        <span class="icon">=></span>
         <a-textarea
+          id="result"
           class="result"
           placeholder="结果文本"
           v-model:value="extractor.result"
