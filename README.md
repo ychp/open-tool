@@ -1,18 +1,23 @@
-# open-tool
+# 常用工具
 
-This template should help get you started developing with Vue 3 in Vite.
+使用 vue3 + TypeScript + antd 实现的单页面网站，主要是日常工作和开发时使用的一些小工具
 
-## Recommended IDE Setup
+地址：[http://tool.yvke.top](http://tool.yvke.top)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+# 功能介绍
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+- 首页：当前日期信息以及假期的倒计时
+- 时间工具
+  - 时间戳转换: 毫秒与格式化日期时间的互转；特定格式的时间转化为毫秒和秒；计算日期天数差以及指定天数后的日期
+  - 公里、农历互转
+  - 节假日查询(暂未支持)
+- 数字工具
+  - 数字列表去重&排序
+  - 简易版计算器
+- 文本工具
+  - 文本处理工具: 根据指定正则提取内容，剔除指定关键字，多行文本去重
+  - 文本合并拆分：多行文本合并为单行， 单号文本拆分为多行
+- 代码生成 (暂未支持)
 
 ## Project Setup
 
