@@ -121,23 +121,6 @@ const refreshDate = async () => {
   todayInfo.month = todayInfo.today.getMonth()
   todayInfo.day = todayInfo.today.getDay()
   todayInfo.leftDaysByOther = []
-  const domain = window.location.hostname
-  if (domain.includes('yingchengpeng.com')) {
-    todayInfo.leftDaysByOther.push(
-      reactive<HolidayInfo>({
-        name: '2024-09-26',
-        date: Solar.fromYmd(2024, 9, 26),
-        leftDays:
-          Solar.fromYmd(2024, 9, 26).subtract(
-            Solar.fromYmd(
-              todayInfo.today.getYear(),
-              todayInfo.today.getMonth(),
-              todayInfo.today.getDay()
-            )
-          ) - 1
-      })
-    )
-  }
   calHolidayCountDown()
 }
 
