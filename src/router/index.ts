@@ -55,6 +55,11 @@ const routers = [
     path: '/generate-by-sql',
     name: 'GenerateBySQL',
     component: () => import('@/components/error/NotSupport.vue')
+  },
+  {
+    path: '/chrome-extensions',
+    name: 'ChromeExtensions',
+    component: () => import('@/components/chrome-extensions/ChromeExtensions.vue')
   }
 ]
 

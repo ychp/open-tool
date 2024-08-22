@@ -48,7 +48,8 @@ import {
   CodeOutlined,
   CalendarOutlined,
   FieldBinaryOutlined,
-  FieldStringOutlined
+  FieldStringOutlined,
+  ControlOutlined
 } from '@ant-design/icons-vue'
 
 const router = useRouter()
@@ -87,6 +88,9 @@ function setMenuStateFromRoute() {
     case 'GenerateBySQL':
       selectedKey = route.name
       openKey = 'CodeGenerator'
+      break
+    case 'ChromeExtensions':
+      selectedKey = route.name
       break
     // 其他情况...
     default:
@@ -204,6 +208,12 @@ const items = ref([
         to: '/generate-by-sql'
       }
     ]
+  },
+  {
+    key: 'ChromeExtensions',
+    icon: () => h(ControlOutlined),
+    label: '谷歌浏览器插件',
+    to: '/chrome-extensions'
   }
 ])
 </script>
