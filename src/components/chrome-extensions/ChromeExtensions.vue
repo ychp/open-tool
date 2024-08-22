@@ -1,9 +1,9 @@
 <template>
   <a-list item-layout="horizontal" :data-source="data">
     <template #header>
-      <div>
+      <div style="width: 100%; display: flex; align-items: center; justify-content: center">
         <a href="https://github.com/ychp/chrome-extensions" target="_blank"
-          ><CodeOutlined /> 源代码</a
+          ><CodeOutlined /> Chrome Extensions 源代码</a
         >
       </div>
     </template>
@@ -14,10 +14,13 @@
             {{ item.title }}
           </template>
           <template #description>
-            {{ item.description }}
+            <div v-html="item.description"></div>
           </template>
           <template #avatar>
-            <a-avatar :src="item.icon" />
+            <a-avatar
+              :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
+              :src="item.icon"
+            />
           </template>
         </a-list-item-meta>
       </a-list-item>
@@ -26,6 +29,9 @@
 </template>
 <script lang="ts" setup>
 import { CodeOutlined } from '@ant-design/icons-vue'
+import multiSession from '@/assets/images/multi-session.png'
+import tabSorter from '@/assets/images/tab-sorter.png'
+
 interface DataItem {
   icon: string
   title: string
@@ -33,15 +39,18 @@ interface DataItem {
 }
 const data: DataItem[] = [
   {
-    icon: '/assets/chrome-extensions/multi-session.png',
+    icon: multiSession,
     title: 'multi-session (开发中)',
     description: '同窗口多登录态组件'
   },
   {
-    icon: '/assets/chrome-extensions/tab-sorter.png',
-    title: 'tab-sorter',
+    icon: tabSorter,
+    title: '标签排序 tab-sorter',
     description:
-      '窗口标签排序，目前支持title按照字典正序排序和倒序排序 以及 LUR，默认title按字典正序排序，可以通过右键插件选项中切换排序类型'
+      '<p>目前支持三种模式的排序(默认为1,切换排序方式,可以通过右键插件选项中切换):</p>' +
+      '<p style="padding-left: 16px;">1.根据title按照字典正序排序</p>' +
+      '<p style="padding-left: 16px;">2.根据title按照字典倒序排序</p>' +
+      '<p style="padding-left: 16px;">3.LUR</p>'
   }
 ]
 </script>
