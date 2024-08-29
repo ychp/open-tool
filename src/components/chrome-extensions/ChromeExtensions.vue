@@ -38,11 +38,11 @@ interface DataItem {
   description: string
 }
 const data: DataItem[] = [
-  {
-    icon: multiSession,
-    title: 'multi-session (开发中)',
-    description: '同窗口多登录态组件'
-  },
+  // {
+  //   icon: multiSession,
+  //   title: 'multi-session (开发中)',
+  //   description: '同窗口多登录态组件'
+  // },
   {
     icon: tabSorter,
     title: '标签排序 tab-sorter',
