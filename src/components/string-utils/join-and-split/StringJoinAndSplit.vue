@@ -33,6 +33,17 @@
             v-model:checked="stringOperation.operateQuotes"
             >追加首尾引号</a-checkbox
           >
+
+          <a-select
+            id="delimiter"
+            style="width: 100px"
+            v-model:value="stringOperation.quotesType"
+            :disabled="!stringOperation.operateQuotes"
+            placeholder="选择引号类型"
+          >
+            <a-select-option value="'">' (单引号)</a-select-option>
+            <a-select-option value='"'>" (双引号)</a-select-option>
+          </a-select>
           <a-checkbox id="removeSpace" class="cb" v-model:checked="stringOperation.removeSpace"
             >去除首尾空格</a-checkbox
           >
@@ -79,6 +90,7 @@ interface StringOperation {
   operationType: string
   delimiter: string
   operateQuotes: boolean
+  quotesType: string
   removeSpace: boolean
   removeDuplicate: boolean
   source: string
@@ -89,7 +101,8 @@ interface StringOperation {
 const stringOperation = reactive<StringOperation>({
   operationType: 'merge',
   delimiter: ',',
-  operateQuotes: true,
+  operateQuotes: false,
+  quotesType: '"',
   removeSpace: true,
   removeDuplicate: true,
   source: '',
@@ -134,17 +147,19 @@ const operateQuotes = function () {
   if (!stringOperation.operateQuotes) {
     return
   }
+  const quotes = stringOperation.quotesType
+
   if (stringOperation.operationType === 'merge') {
     stringOperation.dealStringArray.forEach((item, index) => {
-      stringOperation.dealStringArray[index] = '"' + item + '"'
+      stringOperation.dealStringArray[index] = quotes + item + quotes
     })
   }
   if (stringOperation.operationType === 'split') {
     stringOperation.dealStringArray.forEach((item, index) => {
-      if (item.startsWith('"')) {
+      if (item.startsWith(quotes)) {
         item = item.substring(1)
       }
-      if (item.endsWith('"')) {
+      if (item.endsWith(quotes)) {
         item = item.substring(0, item.length - 1)
       }
       stringOperation.dealStringArray[index] = item

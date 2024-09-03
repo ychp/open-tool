@@ -28,17 +28,18 @@
       <a-row class="row">
         <a-col :span="24" class="col day">
           <a-button @click="prevDay"><CaretLeftFilled height="50" /></a-button>
-          <span style="width: 100px; margin-left: 10px; margin-right: 10px">{{
-            todayInfo.today.getDay()
-          }}</span>
+          <span style="width: 100px; margin-left: 10px; margin-right: 10px">
+            {{ todayInfo.today.getDay() }}
+          </span>
           <a-button @click="nextDay"><CaretRightFilled /></a-button>
         </a-col>
       </a-row>
       <a-row class="row">
         <a-col :span="24" class="col lunar">
-          农历 {{ todayInfo.today.getLunar().getYearInChinese() }}年{{
+          农历 {{ todayInfo.today.getLunar().getYearInChinese() }} 年{{
             todayInfo.today.getLunar().getMonthInChinese()
-          }}月{{ todayInfo.today.getLunar().getDayInChinese() }}
+          }}
+          月{{ todayInfo.today.getLunar().getDayInChinese() }}
         </a-col>
       </a-row>
     </a-card>
@@ -46,11 +47,6 @@
       <template #title>
         <Text strong>假期倒计时</Text>
       </template>
-      <a-row class="row" v-for="{ name, leftDays } in todayInfo.leftDaysByOther" :key="name">
-        <a-col :span="24" class="count-down col"
-          >距离 {{ name }} 还有 <span style="color: red">{{ leftDays }}</span> 天
-        </a-col>
-      </a-row>
       <a-row class="row">
         <a-col :span="24" class="count-down col" v-if="todayInfo.leftDaysByWeekend > 0">
           距离周末还有 {{ todayInfo.leftDaysByWeekend }} 天
@@ -104,6 +100,7 @@ const todayInfo = reactive<TodayInfo>({
 
 onMounted(() => {
   refreshDate()
+  setInterval(nextDayRefresh, 1000 * 60 * 10)
 })
 
 const prevDay = async () => {
@@ -174,6 +171,20 @@ const calHolidayCountDown = async () => {
   }
 
   todayInfo.leftDaysByHoliday = holidayInfos
+}
+
+const nextDayRefresh = () => {
+  const currentDay = Solar.fromDate(new Date())
+  if (
+    currentDay.getYear() == todayInfo.year &&
+    currentDay.getMonth() == todayInfo.month &&
+    currentDay.getDay() == todayInfo.day
+  ) {
+    return
+  }
+
+  todayInfo.today = currentDay
+  refreshDate()
 }
 </script>
 
